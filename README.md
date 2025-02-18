@@ -1,5 +1,17 @@
 # Terraform Dynamic Blocks
 
+```hcl
+resource "terraform_resource" "example" {
+  dynamic "block" {
+    for_each = var.list
+
+    content {
+      resource_value = block.value["object_key"]
+    }
+  }
+}
+```
+
 ## Warum benutzt man Dynamic Blocks in Terraform?
 Dynamic Blocks in Terraform sind nützlich, wenn sich innerhalb einer Ressource wiederholende Konfigurationen befinden, deren Anzahl oder Werte variabel sein können. Sie helfen dabei, Redundanz zu vermeiden und Code flexibler zu gestalten.
 
