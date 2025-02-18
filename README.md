@@ -14,6 +14,22 @@ Ein Dynamic Block in Terraform wird innerhalb einer Ressource definiert, wenn me
 
 ### Code-Beispiel:
 ```hcl
+variable "ingress_rules" {
+  type = list(object({
+    description = string
+    from        = number
+    to          = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+
+  default = [
+    { description = "Allow HTTP", from = 80, to = 80, protocol = "tcp", cidr_blocks = ["0.0.0.0/0"] },
+    { description = "Allow HTTPS", from = 443, to = 443, protocol = "tcp", cidr_blocks = ["0.0.0.0/0"] }
+  ]
+
+}
+
 resource "aws_security_group" "example" {
   name        = "example"
   description = "Example security group"
@@ -34,6 +50,37 @@ resource "aws_security_group" "example" {
 - `dynamic "ingress" {}` definiert den dynamischen Block innerhalb der Ressource.
 - `for_each` iteriert über eine Liste oder Map von Objekten, hier `var.ingress_rules`.
 - `content {}` definiert die eigentlichen Attribute für jede Regel basierend auf `ingress.value`.
+
+### Ergebnis
+```hcl
+resource "aws_security_group" "example" {
+  name = "example-sg"
+
+  ingress {
+    description = "Allow SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTPS"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+```
 
 ## Weitere Ressourcen
 - **Github-Repo mit Hands-on Code:** [terraform-dynamic-blocks](https://github.com/tta-mme/terraform-dynamic-blocks)
