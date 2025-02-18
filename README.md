@@ -51,7 +51,7 @@ resource "aws_security_group" "example" {
 - `for_each` iteriert über eine Liste oder Map von Objekten, hier `var.ingress_rules`.
 - `content {}` definiert die eigentlichen Attribute für jede Regel basierend auf `ingress.value`.
 
-### Ergebnis
+### Ergebnis:
 ```hcl
 resource "aws_security_group" "example" {
   name = "example-sg"
@@ -83,5 +83,4 @@ resource "aws_security_group" "example" {
 ```
 
 ## Weitere Ressourcen
-- **Github-Repo mit Hands-on Code:** [terraform-dynamic-blocks](https://github.com/tta-mme/terraform-dynamic-blocks)
 - **Offizielle Terraform Dokumentation:** [Dynamic Blocks](https://developer.hashicorp.com/terraform/language/expressions/dynamic-blocks)
