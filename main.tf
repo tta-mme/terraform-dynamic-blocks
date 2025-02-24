@@ -12,15 +12,21 @@
 # }
 
 locals {
-  ingress_additional = {
+  ingress_additional = [{
     description = "Allow SSH"
     from        = 22
     to          = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-  }
+    }, {
+    description = "Allow OpenVPN"
+    from        = 1194
+    to          = 1194
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }]
 
-  ingress_merged = concat(var.ingress_rules, [local.ingress_additional])
+  ingress_merged = concat(var.ingress_rules, local.ingress_additional)
 }
 
 resource "aws_security_group" "example" {
